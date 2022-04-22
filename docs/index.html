@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+		<!-- Creditos ao Lord_Darksid3 pelo titulo -->
+		<title>Historia ao Avesso</title>
+		<style>
+			h1 {
+				color: #ddd;
+				font-family: Consolas, monospace, sans-serif;
+			}
+			h3 {
+				color: #bbb;
+				font-family: Consolas, monospace, sans-serif;
+				max-width: 340px;
+				text-align: center;
+				font-weight: normal;
+				font-size: 19px;
+			}
+			a {
+				color: white;
+				font-family: Consolas, monospace, sans-serif;
+				font-size: 1.5rem;
+				padding: 1rem;
+				border: 1px solid #000;
+				border-radius: 5px;
+				background-color: #444;
+			}
+			a:hover {
+				background-color: #333;
+			}
+			.button-list > div {
+				margin: 0 1rem;
+			}
+		</style>
+	</head>
+	<body style="background-color: #1e1e1e; margin: 0; padding: 0; overflow: hidden;">
+		<!-- Design futuristico aprovado por machiniiis e Lord_Darksid3-->
+		<div id="frontpage" style="display: flex; width: 100vw; height: 100vh; justify-content: center; align-items: center; flex-direction: column">
+			<h1>Historia do Avesso</h1>
+			<h3>Desafie-se escrevendo uma história do fim até o inicio.</h3>
+			<div class="button-list" style="display: flex; margin-top: 50px">
+				<div>
+					<!-- Creditos para o Lord_Darksid3 pelo nome do modo -->
+					<a href="#modo-com-tempo" onclick="window.onModoComTempoClick(event)">Modo desafio</a>
+				</div>
+				<div>
+					<a href="#modo-sem-tempo" onclick="window.onModoSemTempoClick(event)">Modo livre</a>
+				</div>
+			</div>
+			<div id="ajudaWrapper" style="display: none; margin-top: 3rem">
+				<a href="#ajuda" onclick="window.onAjudaClick(event)">Ajuda</a>
+			</div>
+		</div>
+		<div id="root"></div>
+		<script>
+			// pros perdido
+			setTimeout(() => window['ajudaWrapper'].style.display = 'block', 15000);
+		</script>
+		<script src="./main.bundle.js"></script>
+	</body>
+</html>
