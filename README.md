@@ -13,7 +13,7 @@ Inclui modo desafio!
 
 # Origem
 
-Este é um repositório do projeto da semana dev de 17/04/2022 que eu comecei no dia 22/04/2022 (2 dias antes de terminar).
+Este é um repositório do projeto da semana dev organizada pelo jp_amis em 17/04/2022, entretanto eu iniciei já na metade, com dois dias restantes para termina, e portanto meu escopo ficou pequeno e meu código caótico.
 
 ## TechStack
 
