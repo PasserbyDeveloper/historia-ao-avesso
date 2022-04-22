@@ -1,24 +1,32 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
+const prefixEndpoint = (window.location.hostname !== 'localhost') ? '/historia-ao-avesso' : '';
+
 window["onModoComTempoClick"] = function(event) {
 	event.preventDefault();
 	startEditor(true);
 	window['frontpage'].style.display = 'none';
-	window.history.pushState(null, null, '/#modo-com-tempo');
+	window.history.pushState(null, null, prefixEndpoint + '/#modo-com-tempo');
 }
 
 window["onModoSemTempoClick"] = function(event) {
 	event.preventDefault();
 	startEditor(false);
 	window['frontpage'].style.display = 'none';
-	window.history.pushState(null, null, '/#modo-sem-tempo');
+	window.history.pushState(null, null, prefixEndpoint + '/#modo-sem-tempo');
 }
 
 window.onpopstate = function() {
-	if (window.location.pathname === '/') {
+	onPageStart();
+}
+
+function onPageStart() {
+	if (window.location.pathname === '/historia-ao-avesso/' || window.location.pathname === '/') {
 		window['frontpage'].style.display = 'flex';
-		window['editor'].dispose();
-	} else if (window.location.pathname.startsWith('/#modo-com-tempo')) {
+		if (window['editor']) {
+			window['editor'].dispose();
+		}
+	} else if (window.location.pathname.startsWith(prefixEndpoint + '/#modo-com-tempo')) {
 		window['frontpage'].style.display = 'none';
 		startEditor(true);
 	} else {
@@ -26,6 +34,8 @@ window.onpopstate = function() {
 		startEditor(false);
 	}
 }
+
+onPageStart();
 
 function startEditor(isTimerBasedSession) {
 	// create div to avoid needing a HtmlWebpackPlugin template
@@ -63,7 +73,7 @@ function startEditor(isTimerBasedSession) {
 		window['div'].style = `width: ${window.innerWidth}px; height: ${window.innerHeight}px;`;
 	});
 
-	const line = Math.floor(numberOfLines * 0.7);
+	const line = Math.floor(numberOfLines * 0.5);
 	editor.setSelection(new monaco.Range(line, 0, line, 1));
 	editor.focus();
 
