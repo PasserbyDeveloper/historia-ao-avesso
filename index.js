@@ -2,71 +2,71 @@ import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
 const prefixEndpoint = (window.location.hostname !== 'localhost') ? '/historia-ao-avesso' : '';
 
-window["onModoComTempoClick"] = function(event) {
+window.onModoComTempoClick = function(event) {
 	event.preventDefault();
 	window.history.pushState(null, null, prefixEndpoint + '/#modo-com-tempo');
-	onPageStart();
+	window.onPageStart();
 }
 
-window["onModoSemTempoClick"] = function(event) {
+window.onModoSemTempoClick = function(event) {
 	event.preventDefault();
 	window.history.pushState(null, null, prefixEndpoint + '/#modo-sem-tempo');
-	onPageStart();
+	window.onPageStart();
 }
 
-window["onAjudaClick"] = function(event) {
+window.onAjudaClick = function(event) {
 	event.preventDefault();
 	window.history.pushState(null, null, prefixEndpoint + '/#ajuda');
-	onPageStart();
+	window.onPageStart();
 }
 
 
 window.onpopstate = function() {
-	onPageStart();
+	window.onPageStart();
 }
 
-function onPageStart() {
+window.onPageStart = function() {
 	const url = window.location.href.substring(window.location.href.indexOf('/', 8));
-	window['modalwrapper'].style.display = 'none';
+	window.modalwrapper.style.display = 'none';
 	document.querySelector('button.share-button').style.display = 'none';
 	if (url === '/historia-ao-avesso/' || url === '/') {
-		window['frontpage'].style.display = 'flex';
-		if (window['editor']) {
-			window['editor'].dispose();
+		window.frontpage.style.display = 'flex';
+		if (window.editor) {
+			window.editor.dispose();
 		}
-		window['help'].style.display = 'none';
-		window['dangerzone'].style.display = 'none';
-		window['gameoverscreen'].style.display = 'none';
+		window.help.style.display = 'none';
+		window.dangerzone.style.display = 'none';
+		window.gameoverscreen.style.display = 'none';
 	} else if (url.startsWith(prefixEndpoint + '/#modo-com-tempo')) {
-		window['frontpage'].style.display = 'none';
-		startEditor(true);
-		window['help'].style.display = 'none';
+		window.frontpage.style.display = 'none';
+		window.startEditor(true, false);
+		window.help.style.display = 'none';
 		setTimeout(startDangerZone, 500);
-		window['dangerzone'].style.display = 'none';
-		window['gameoverscreen'].style.display = 'none';
+		window.dangerzone.style.display = 'none';
+		window.gameoverscreen.style.display = 'none';
 	} else if (url.startsWith(prefixEndpoint + '/#modo-sem-tempo')) {
-		window['frontpage'].style.display = 'none';
-		window['help'].style.display = 'none';
-		window['dangerzone'].style.display = 'none';
-		window['gameoverscreen'].style.display = 'none';
-		startEditor(false);
+		window.frontpage.style.display = 'none';
+		window.help.style.display = 'none';
+		window.dangerzone.style.display = 'none';
+		window.gameoverscreen.style.display = 'none';
+		window.startEditor(false, false);
 	} else if (url.startsWith(prefixEndpoint + '/#ajuda')) {
-		window['frontpage'].style.display = 'none';
-		if (window['editor']) {
-			window['editor'].dispose();
+		window.frontpage.style.display = 'none';
+		if (window.editor) {
+			window.editor.dispose();
 		}
-		window['dangerzone'].style.display = 'none';
-		window['gameoverscreen'].style.display = 'none';
-		window['help'].style.display = 'flex';
+		window.dangerzone.style.display = 'none';
+		window.gameoverscreen.style.display = 'none';
+		window.help.style.display = 'flex';
 	} else if (url.startsWith(prefixEndpoint + '/#share-')) {
-		window['frontpage'].style.display = 'none';
-		window['help'].style.display = 'none';
-		window['dangerzone'].style.display = 'none';
-		window['gameoverscreen'].style.display = 'none';
-		const base64 = url.substring(url.indexOf('/#share-') + 8);
-		const text = decodeURIComponent(base64);
-		startEditor(false);
-		setTimeout(() => {window['editor'].setValue(text)}, 300);
+		window.frontpage.style.display = 'none';
+		window.help.style.display = 'none';
+		window.dangerzone.style.display = 'none';
+		window.gameoverscreen.style.display = 'none';
+		const encodedText = url.substring(url.indexOf('/#share-') + 8);
+		const text = decodeURIComponent(encodedText);
+		window.startEditor(false, true);
+		setTimeout(() => {window.editor.setValue(text)}, 300);
 	}
 }
 
@@ -75,7 +75,7 @@ let dangerZonePresentationElement = null;
 let dangerZoneState = {
 	name: 'reset'
 };
-function onDangerZoneUpdate(timeNowMs) {
+window.onDangerZoneUpdate = function(timeNowMs) {
 	if (!isDangerZoneActive) {
 		return;
 	}
@@ -83,18 +83,18 @@ function onDangerZoneUpdate(timeNowMs) {
 		dangerZonePresentationElement = document.querySelector(`div.view-lines[role="presentation"]`);
 		if (!dangerZonePresentationElement) {
 			console.error('Danger zone line wrapper (presentation) not found');
-			requestAnimationFrame(onDangerZoneUpdate);
+			requestAnimationFrame(window.onDangerZoneUpdate);
 			return;
 		}
 	}
 
 
-	const currentLineCount = window['editor'].getValue().split('\n').length;
+	const currentLineCount = window.editor.getValue().split('\n').length;
 
 	if (editor.getScrollTop() != 0 && dangerZoneState.name !== 'finished') {
 		editor.setScrollTop(0);
 	}
-	const lineNumber = window['editor'].getPosition().lineNumber;
+	const lineNumber = window.editor.getPosition().lineNumber;
 
 	if (dangerZoneState.name === 'reset') {
 		dangerZoneState.lastLineCount = currentLineCount;
@@ -105,7 +105,7 @@ function onDangerZoneUpdate(timeNowMs) {
 			const lineElement = dangerZonePresentationElement.children[lineNumber];
 			if (!lineElement) {
 				console.error('Line element not found');
-				requestAnimationFrame(onDangerZoneUpdate);
+				requestAnimationFrame(window.onDangerZoneUpdate);
 				return;
 			}
 			const lineElementTop = lineElement.getBoundingClientRect().y;
@@ -115,12 +115,12 @@ function onDangerZoneUpdate(timeNowMs) {
 			dangerZoneState.currentLineStartedAt = timeNowMs;
 			dangerZoneState.name = 'rising-danger-zone';
 			dangerZoneState.position = (window.innerHeight * 0.99);
-			const targetY = window['editor'].getTopForLineNumber(lineNumber+1);
+			const targetY = window.editor.getTopForLineNumber(lineNumber+1);
 			dangerZoneState.positionLimit = targetY;
 			const distance = targetY - dangerZoneState.position;
 			dangerZoneState.velocity = distance / 10;
-			window['dangerzone'].style.display = 'block';
-			window['dangerzone'].style.top = dangerZoneState.position.toString() + 'px';
+			window.dangerzone.style.display = 'block';
+			window.dangerzone.style.top = dangerZoneState.position.toString() + 'px';
 			dangerZoneState.lastFrameTime = timeNowMs;
 			dangerZoneState.lastLineCount = currentLineCount;
 		}
@@ -130,41 +130,44 @@ function onDangerZoneUpdate(timeNowMs) {
 		if (currentLineCount > dangerZoneState.lastLineCount) {
 			dangerZoneState.lastLineCount = currentLineCount;
 			dangerZoneState.currentLineStartedAt = timeNowMs;
- 			const lineHeight = window['editor'].getTopForLineNumber(2) - window['editor'].getTopForLineNumber(1);
+ 			const lineHeight = window.editor.getTopForLineNumber(2) - window.editor.getTopForLineNumber(1);
 			dangerZoneState.position += lineHeight;
 		}
 
 		dangerZoneState.position += timeSinceLastFrame * dangerZoneState.velocity;
-		window['dangerzone'].style.top = dangerZoneState.position.toString() + 'px';
+		window.dangerzone.style.top = dangerZoneState.position.toString() + 'px';
 
-		const nextLineTop = window['editor'].getTopForLineNumber(lineNumber + 1);
+		const nextLineTop = window.editor.getTopForLineNumber(lineNumber + 1);
 		if (dangerZoneState.position < nextLineTop) {
-			window['editor'].updateOptions({ readOnly: true });
+			window.editor.updateOptions({ readOnly: true });
 			dangerZoneState.name = 'finished';
-			window['dangerzone'].style.display = 'none';
+			window.dangerzone.style.display = 'none';
 			showGameOverScreen();
 		}
+	} else if (dangerZoneState.name === 'finished') {
+		// Stop the loop
+		return;
 	}
 
-	requestAnimationFrame(onDangerZoneUpdate);
+	requestAnimationFrame(window.onDangerZoneUpdate);
 }
 
 window.onCompartilharClick = function(event) {
 	event.preventDefault();
-	window['modalwrapper'].style.display = 'flex';
-	const input = window['modalwrapper'].querySelector('input');
-	const base64 = window['editor'].getValue();
+	window.modalwrapper.style.display = 'flex';
+	const input = window.modalwrapper.querySelector('input');
+	const base64 = window.editor.getValue();
 	input.value = window.location.origin + window.location.pathname + '#share-' + encodeURIComponent(base64);
 }
 
 // event listener to remove modal on ESC
 window.addEventListener('keydown', (event) => {
 	if (event.code === 'Escape') {
-		window['modalwrapper'].style.display = 'none';
+		window.modalwrapper.style.display = 'none';
 	}
-})
+});
 
-function showShareButton(isInstant) {
+window.showShareButton = function(isInstant) {
 	const share = document.querySelector('button.share-button');
 	share.style.display = '';
 	share.style.opacity = '0';
@@ -176,9 +179,9 @@ function showShareButton(isInstant) {
 }
 
 function showGameOverScreen() {
-	window['gameoverscreen'].style.display = 'flex';
-	const title = window['gameoverscreen'].querySelector('h1');
-	showShareButton(false);
+	window.gameoverscreen.style.display = 'flex';
+	const title = window.gameoverscreen.querySelector('h1');
+	window.showShareButton(false);
 	title.style.opacity = '0';
 	title.style.transform = 'translate(0, 20px)';
 	setTimeout(() => {
@@ -237,16 +240,16 @@ function showGameOverScreen() {
 function startDangerZone() {
 	isDangerZoneActive = true;
 	dangerZoneState.name = 'reset';
-	requestAnimationFrame(onDangerZoneUpdate);
+	requestAnimationFrame(window.onDangerZoneUpdate);
 }
 
 onPageStart();
 
-function startEditor(isTimerBasedSession) {
-	if (!isTimerBasedSession) {
-		showShareButton(true);
+window.startEditor = function(isTimerBasedSession, shouldShowShareButton) {
+	if (!isTimerBasedSession && shouldShowShareButton) {
+		window.showShareButton(true);
 	}
-	const div = window['root'];
+	const div = window.root;
 	div.style = `width: ${window.innerWidth}px; height: ${window.innerHeight}px;`;
 
 	document.body.appendChild(div);
@@ -267,16 +270,16 @@ function startEditor(isTimerBasedSession) {
 		wordBasedSuggestions: false,
 	});
 
-	window['editor'] = editor;
+	window.editor = editor;
 
 	window.addEventListener('resize', function() {
-		if (window['editor']) {
-			window['editor'].layout({
+		if (window.editor) {
+			window.editor.layout({
 				width: window.innerWidth,
 				height: window.innerHeight,
 			});
 		}
-		window['root'].style = `width: ${window.innerWidth}px; height: ${window.innerHeight}px;`;
+		window.root.style = `width: ${window.innerWidth}px; height: ${window.innerHeight}px;`;
 	});
 
 	const line = Math.floor(numberOfLines * 0.5);
