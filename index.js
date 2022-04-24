@@ -25,9 +25,19 @@ window.onpopstate = function() {
 	window.onPageStart();
 }
 
+window.onCopyButtonClick = function(event) {
+	event.preventDefault();
+	const input = window.modalwrapper.querySelector('input');
+	input.focus();
+	input.select();
+	document.execCommand('copy');
+	window.copybutton.innerText = 'Copiado!'
+}
+
 window.onPageStart = function() {
 	const url = window.location.href.substring(window.location.href.indexOf('/', 8));
 	window.modalwrapper.style.display = 'none';
+	window.copybutton.innerText = 'Copiar';
 	document.querySelector('button.share-button').style.display = 'none';
 	if (url === '/historia-ao-avesso/' || url === '/') {
 		window.frontpage.style.display = 'flex';
@@ -38,6 +48,9 @@ window.onPageStart = function() {
 		window.dangerzone.style.display = 'none';
 		window.gameoverscreen.style.display = 'none';
 	} else if (url.startsWith(prefixEndpoint + '/#modo-com-tempo')) {
+		if (window.editor) {
+			window.editor.dispose();
+		}
 		window.startEditor(true, false);
 		window.frontpage.style.display = 'none';
 		window.dangerzone.style.display = 'none';
@@ -45,11 +58,14 @@ window.onPageStart = function() {
 		setTimeout(window.startDangerZone, 500);
 		window.help.style.display = 'none';
 	} else if (url.startsWith(prefixEndpoint + '/#modo-sem-tempo')) {
+		if (window.editor) {
+			window.editor.dispose();
+		}
 		window.frontpage.style.display = 'none';
 		window.help.style.display = 'none';
 		window.dangerzone.style.display = 'none';
 		window.gameoverscreen.style.display = 'none';
-		window.startEditor(false, false);
+		window.startEditor(false, true);
 	} else if (url.startsWith(prefixEndpoint + '/#ajuda')) {
 		window.frontpage.style.display = 'none';
 		if (window.editor) {
@@ -59,19 +75,22 @@ window.onPageStart = function() {
 		window.gameoverscreen.style.display = 'none';
 		window.help.style.display = 'flex';
 	} else if (url.startsWith(prefixEndpoint + '/#share-')) {
+		if (window.editor) {
+			window.editor.dispose();
+		}
 		window.frontpage.style.display = 'none';
 		window.help.style.display = 'none';
 		window.dangerzone.style.display = 'none';
 		window.gameoverscreen.style.display = 'none';
 		const encodedText = url.substring(url.indexOf('/#share-') + 8);
 		const text = decodeURIComponent(encodedText);
-		window.startEditor(false, true);
+		window.startEditor(false, false);
 		setTimeout(() => {window.editor.setValue(text)}, 300);
 	}
 }
 
 window.isDangerZoneActive = false;
-let dangerZonePresentationElement = null;
+window.dangerZonePresentationElement = null;
 window.dangerZoneState = {
 	name: 'reset'
 };
@@ -79,9 +98,9 @@ window.onDangerZoneUpdate = function(timeNowMs) {
 	if (window.isDangerZoneActive === false) {
 		return;
 	}
-	if (!dangerZonePresentationElement) {
-		dangerZonePresentationElement = document.querySelector(`div.view-lines[role="presentation"]`);
-		if (!dangerZonePresentationElement) {
+	if (!window.dangerZonePresentationElement) {
+		window.dangerZonePresentationElement = document.querySelector(`div.view-lines[role="presentation"]`);
+		if (!window.dangerZonePresentationElement) {
 			console.error('Danger zone line wrapper (presentation) not found');
 			requestAnimationFrame(window.onDangerZoneUpdate);
 			return;
@@ -102,7 +121,7 @@ window.onDangerZoneUpdate = function(timeNowMs) {
 	} else if (window.dangerZoneState.name === 'waiting-first-enter') {
 		if (currentLineCount > window.dangerZoneState.lastLineCount) {
 
-			const lineElement = dangerZonePresentationElement.children[lineNumber];
+			const lineElement = window.dangerZonePresentationElement.children[lineNumber];
 			if (!lineElement) {
 				console.error('Line element not found');
 				requestAnimationFrame(window.onDangerZoneUpdate);
