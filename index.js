@@ -26,7 +26,7 @@ window.onpopstate = function() {
 }
 
 function onPageStart() {
-	const url = window.location.href.substring(window.location.href.indexOf('/', 7));
+	const url = window.location.href.substring(window.location.href.indexOf('/', 8));
 	window['modalwrapper'].style.display = 'none';
 	document.querySelector('button.share-button').style.display = 'none';
 	if (url === '/historia-ao-avesso/' || url === '/') {
@@ -55,9 +55,9 @@ function onPageStart() {
 		if (window['editor']) {
 			window['editor'].dispose();
 		}
-		window['help'].style.display = 'flex';
 		window['dangerzone'].style.display = 'none';
 		window['gameoverscreen'].style.display = 'none';
+		window['help'].style.display = 'flex';
 	} else if (url.startsWith(prefixEndpoint + '/#share-')) {
 		window['frontpage'].style.display = 'none';
 		window['help'].style.display = 'none';
