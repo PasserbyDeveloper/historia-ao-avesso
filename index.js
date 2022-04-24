@@ -162,7 +162,10 @@ window.onDangerZoneUpdate = function(timeNowMs) {
 			window.dangerZoneState.lastLineCount = currentLineCount;
 			window.dangerZoneState.currentLineStartedAt = timeNowMs;
  			const lineHeight = window.editor.getTopForLineNumber(2) - window.editor.getTopForLineNumber(1);
-			window.dangerZoneState.position += lineHeight;
+			window.dangerZoneState.position += lineHeight * 2;
+			if (window.dangerZoneState.position > window.innerHeight) {
+				window.dangerZoneState.position = window.innerHeight;
+			}
 		}
 
 		window.dangerZoneState.position += timeSinceLastFrame * window.dangerZoneState.velocity;
