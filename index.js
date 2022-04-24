@@ -244,8 +244,6 @@ window.startDangerZone = function () {
 	requestAnimationFrame(window.onDangerZoneUpdate);
 }
 
-onPageStart();
-
 window.startEditor = function(isTimerBasedSession, shouldShowShareButton) {
 	if (!isTimerBasedSession && shouldShowShareButton) {
 		window.showShareButton(true);
@@ -314,6 +312,8 @@ window.startEditor = function(isTimerBasedSession, shouldShowShareButton) {
 			editor.setSelection(new monaco.Range(line.lineNumber, 0, line.lineNumber, 1))
 		}
 	);
-
 };
+
+onPageStart();
+
 
