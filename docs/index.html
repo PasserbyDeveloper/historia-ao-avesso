@@ -27,6 +27,12 @@
 				border-radius: 5px;
 				background-color: #444;
 			}
+			#semanadev a {
+				background-color: none;
+				border: none;
+				font-size: 14px;
+				padding: 0.3rem 0.4rem;
+			}
 			a:hover {
 				background-color: #333;
 			}
@@ -116,6 +122,10 @@
 				font-family: "Courier New";
 				width: 100%;
 				box-sizing: border-box;
+				margin-bottom: 10px;
+			}
+			.monaco-editor, .monaco-editor-background, .monaco-editor .inputarea.ime-input {
+				background-color: transparent !important;
 			}
 		</style>
 	</head>
@@ -133,8 +143,11 @@
 					<a href="#modo-sem-tempo" onclick="window.onModoSemTempoClick(event)">Modo livre</a>
 				</div>
 			</div>
-			<div id="ajudawrapper" style="opacity: 0; margin-top: 3rem">
-				<a href="#ajuda" style="pointerEvents: none;" onclick="window.onAjudaClick(event)">Ajuda</a>
+			<div style="margin-top: 5rem">
+				<a href="#ajuda" style="font-size: 1rem" onclick="window.onAjudaClick(event)">Ajuda</a>
+			</div>
+			<div style="margin-top: 3rem">
+				<a href="#semanadev" style="font-size: 1rem" onclick="window.onSemanaDevClick(event)">Semana Dev</a>
 			</div>
 		</div>
 		<div id="root"></div>
@@ -145,7 +158,7 @@
 				<p>O objetivo é criar uma história começando pela ultima frase dele, pensando na história de trás para frente.</p>
 				<p>Sempre que pressionar enter, o texto de linha atual desce liberando mais espaço para você escrever o que ocorreu antes.</p>
 				<p>Você também pode pressionar Shift+Enter para mandar o texto atual duas linhas para baixo.</p>
-				<p>No modo desafio, você tem cerca de 10 segundos para escrever cada frase, se demorar demais ou mover a linha para a borda vermelha você perde sua história. Quando terminar, basta apertar no botão 'Terminei!' em baixo, a direita.</p>
+				<p>No modo desafio, você tem cerca de 10 segundos para escrever cada frase, sendo que ganha mais tempo conforme escreve novas linhas, você pode mover seu cursor para cima, mas se a linha vermelha atingir seu cursor de texto, sua história do avesso acaba!</p>
 			</div>
 		</div>
 		<div id="dangerzone" style="display: none"></div>
@@ -163,13 +176,17 @@
 				</div>
 			</div>
 		</div>
-		<script>
-			// pros perdido
-			setTimeout(() => {
-				window.ajudawrapper.style.opacity = '1';
-				window.ajudawrapper.children[0].style.pointerEvents = 'all';
-			}, 4000);
-		</script>
+		<div id="semanadev" style="display: none; flex-direction: column; color: #ccc; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 999; justify-content: center; align-items: center;">
+			<h1>SemanaDev</h1>
+			<div style="max-width: 500px">SemanaDev foi um evento que ocorreu entre <b>17/04/2022</b> e <b>24/04/2022</b> em que o seguinte grupo de pessoas se reuniram para desenvolver projetos individuais em live neste periodo:</div>
+			<div style="margin-top: 1rem">
+				<div style="margin: 1rem 0"><a href="https://www.twitch.tv/jp_amis">jp_amis</a> - Projeto com Nuxt.js</div>
+				<div style="margin: 1rem 0"><a href="https://www.twitch.tv/viniborgs">viniborgs</a> - Projeto com Ruby / Crystal</div>
+				<div style="margin: 1rem 0"><a href="https://www.twitch.tv/eusoudallai">eusoudallai</a> - Projeto com Laravel / CLI</div>
+				<div style="margin: 1rem 0"><a href="https://www.twitch.tv/NicholasPmiranda">NicholasPmiranda</a> - Projeto com Laravel / Nodejs</div>
+				<div style="margin: 1rem 0"><a href="https://www.twitch.tv/CamisaDoAvesso">CamisaDoAvesso</a> - (eu) Projeto com Monaco na Web / Github pages</div>
+			</div>
+		</div>
 		<script src="./main.bundle.js"></script>
 	</body>
 </html>

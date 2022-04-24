@@ -14,6 +14,12 @@ window.onModoSemTempoClick = function(event) {
 	window.onPageStart();
 }
 
+window.onSemanaDevClick = function(event) {
+	event.preventDefault();
+	window.history.pushState(null, null, prefixEndpoint + '#semanadev');
+	window.onPageStart();
+}
+
 window.onAjudaClick = function(event) {
 	event.preventDefault();
 	window.history.pushState(null, null, prefixEndpoint + '/#ajuda');
@@ -37,6 +43,7 @@ window.onCopyButtonClick = function(event) {
 window.onPageStart = function() {
 	const url = window.location.href.substring(window.location.href.indexOf('/', 8));
 	window.modalwrapper.style.display = 'none';
+	window.semanadev.style.display = 'none';
 	window.copybutton.innerText = 'Copiar';
 	document.querySelector('button.share-button').style.display = 'none';
 	if (url === '/historia-ao-avesso/' || url === '/') {
@@ -86,6 +93,12 @@ window.onPageStart = function() {
 		const text = decodeURIComponent(encodedText);
 		window.startEditor(false, false);
 		setTimeout(() => {window.editor.setValue(text)}, 300);
+	} else if (url.startsWith(prefixEndpoint + '/#semanadev')) {
+		window.semanadev.style.display = 'flex';
+		window.frontpage.style.display = 'none';
+		window.help.style.display = 'none';
+		window.dangerzone.style.display = 'none';
+		window.gameoverscreen.style.display = 'none';
 	}
 }
 
