@@ -38,12 +38,12 @@ window.onPageStart = function() {
 		window.dangerzone.style.display = 'none';
 		window.gameoverscreen.style.display = 'none';
 	} else if (url.startsWith(prefixEndpoint + '/#modo-com-tempo')) {
-		window.frontpage.style.display = 'none';
 		window.startEditor(true, false);
-		window.help.style.display = 'none';
-		setTimeout(startDangerZone, 500);
+		window.frontpage.style.display = 'none';
 		window.dangerzone.style.display = 'none';
 		window.gameoverscreen.style.display = 'none';
+		setTimeout(window.startDangerZone, 500);
+		window.help.style.display = 'none';
 	} else if (url.startsWith(prefixEndpoint + '/#modo-sem-tempo')) {
 		window.frontpage.style.display = 'none';
 		window.help.style.display = 'none';
@@ -70,13 +70,13 @@ window.onPageStart = function() {
 	}
 }
 
-let isDangerZoneActive = false;
+window.isDangerZoneActive = false;
 let dangerZonePresentationElement = null;
-let dangerZoneState = {
+window.dangerZoneState = {
 	name: 'reset'
 };
 window.onDangerZoneUpdate = function(timeNowMs) {
-	if (!isDangerZoneActive) {
+	if (window.isDangerZoneActive === false) {
 		return;
 	}
 	if (!dangerZonePresentationElement) {
@@ -91,16 +91,16 @@ window.onDangerZoneUpdate = function(timeNowMs) {
 
 	const currentLineCount = window.editor.getValue().split('\n').length;
 
-	if (editor.getScrollTop() != 0 && dangerZoneState.name !== 'finished') {
+	if (editor.getScrollTop() != 0 && window.dangerZoneState.name !== 'finished') {
 		editor.setScrollTop(0);
 	}
 	const lineNumber = window.editor.getPosition().lineNumber;
 
-	if (dangerZoneState.name === 'reset') {
-		dangerZoneState.lastLineCount = currentLineCount;
-		dangerZoneState.name = 'waiting-first-enter';
-	} else if (dangerZoneState.name === 'waiting-first-enter') {
-		if (currentLineCount > dangerZoneState.lastLineCount) {
+	if (window.dangerZoneState.name === 'reset') {
+		window.dangerZoneState.lastLineCount = currentLineCount;
+		window.dangerZoneState.name = 'waiting-first-enter';
+	} else if (window.dangerZoneState.name === 'waiting-first-enter') {
+		if (currentLineCount > window.dangerZoneState.lastLineCount) {
 
 			const lineElement = dangerZonePresentationElement.children[lineNumber];
 			if (!lineElement) {
@@ -110,42 +110,43 @@ window.onDangerZoneUpdate = function(timeNowMs) {
 			}
 			const lineElementTop = lineElement.getBoundingClientRect().y;
 
-			dangerZoneState.startY = lineElementTop;
-			dangerZoneState.startedAt = timeNowMs;
-			dangerZoneState.currentLineStartedAt = timeNowMs;
-			dangerZoneState.name = 'rising-danger-zone';
-			dangerZoneState.position = (window.innerHeight * 0.99);
+			window.dangerZoneState.startY = lineElementTop;
+			window.dangerZoneState.startedAt = timeNowMs;
+			window.dangerZoneState.currentLineStartedAt = timeNowMs;
+			window.dangerZoneState.name = 'rising-danger-zone';
+			window.dangerZoneState.position = (window.innerHeight * 0.99);
 			const targetY = window.editor.getTopForLineNumber(lineNumber+1);
-			dangerZoneState.positionLimit = targetY;
-			const distance = targetY - dangerZoneState.position;
-			dangerZoneState.velocity = distance / 10;
+			window.dangerZoneState.positionLimit = targetY;
+			const distance = targetY - window.dangerZoneState.position;
+			window.dangerZoneState.velocity = distance / 10;
 			window.dangerzone.style.display = 'block';
-			window.dangerzone.style.top = dangerZoneState.position.toString() + 'px';
-			dangerZoneState.lastFrameTime = timeNowMs;
-			dangerZoneState.lastLineCount = currentLineCount;
+			window.dangerzone.style.top = window.dangerZoneState.position.toString() + 'px';
+			window.dangerZoneState.lastFrameTime = timeNowMs;
+			window.dangerZoneState.lastLineCount = currentLineCount;
 		}
-	} else if (dangerZoneState.name === 'rising-danger-zone') {
-		const timeSinceLastFrame = (timeNowMs - dangerZoneState.lastFrameTime) / 1000;
-		dangerZoneState.lastFrameTime = timeNowMs;
-		if (currentLineCount > dangerZoneState.lastLineCount) {
-			dangerZoneState.lastLineCount = currentLineCount;
-			dangerZoneState.currentLineStartedAt = timeNowMs;
+	} else if (window.dangerZoneState.name === 'rising-danger-zone') {
+		const timeSinceLastFrame = (timeNowMs - window.dangerZoneState.lastFrameTime) / 1000;
+		window.dangerZoneState.lastFrameTime = timeNowMs;
+		if (currentLineCount > window.dangerZoneState.lastLineCount) {
+			window.dangerZoneState.lastLineCount = currentLineCount;
+			window.dangerZoneState.currentLineStartedAt = timeNowMs;
  			const lineHeight = window.editor.getTopForLineNumber(2) - window.editor.getTopForLineNumber(1);
-			dangerZoneState.position += lineHeight;
+			window.dangerZoneState.position += lineHeight;
 		}
 
-		dangerZoneState.position += timeSinceLastFrame * dangerZoneState.velocity;
-		window.dangerzone.style.top = dangerZoneState.position.toString() + 'px';
+		window.dangerZoneState.position += timeSinceLastFrame * window.dangerZoneState.velocity;
+		window.dangerzone.style.top = window.dangerZoneState.position.toString() + 'px';
 
 		const nextLineTop = window.editor.getTopForLineNumber(lineNumber + 1);
-		if (dangerZoneState.position < nextLineTop) {
+		if (window.dangerZoneState.position < nextLineTop) {
 			window.editor.updateOptions({ readOnly: true });
-			dangerZoneState.name = 'finished';
+			window.dangerZoneState.name = 'finished';
 			window.dangerzone.style.display = 'none';
 			showGameOverScreen();
 		}
-	} else if (dangerZoneState.name === 'finished') {
+	} else if (window.dangerZoneState.name === 'finished') {
 		// Stop the loop
+		window.isDangerZoneActive = false;
 		return;
 	}
 
@@ -237,7 +238,7 @@ function showGameOverScreen() {
 	requestAnimationFrame(animateConfetti);
 }
 
-function startDangerZone() {
+window.startDangerZone = function () {
 	isDangerZoneActive = true;
 	dangerZoneState.name = 'reset';
 	requestAnimationFrame(window.onDangerZoneUpdate);

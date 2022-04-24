@@ -35,5 +35,6 @@ Obrigado a todos que apareceram nas lives de 2022-04-22 e 2022-04-23, os dias de
 - machiniiis
 - jp_amis (valeu pela raid!)
 - sergiocabral_com (valeu pela raid!)
-- Magistrado (valeu pela idéia de endgame do desafio e do sistema de compartilhar por link)
+- Magistrado (valeu pela idéia dos confeitos e do modo de compartilhar por link)
 - FioteBearDev (valeu pela raid!)
+- Magistrado (por apoiar o projeto de forma jurídica)
