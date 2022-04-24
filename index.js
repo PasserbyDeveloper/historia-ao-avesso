@@ -16,7 +16,7 @@ window.onModoSemTempoClick = function(event) {
 
 window.onSemanaDevClick = function(event) {
 	event.preventDefault();
-	window.history.pushState(null, null, prefixEndpoint + '#semanadev');
+	window.history.pushState(null, null, prefixEndpoint + '/#semanadev');
 	window.onPageStart();
 }
 
@@ -25,7 +25,6 @@ window.onAjudaClick = function(event) {
 	window.history.pushState(null, null, prefixEndpoint + '/#ajuda');
 	window.onPageStart();
 }
-
 
 window.onpopstate = function() {
 	window.onPageStart();
