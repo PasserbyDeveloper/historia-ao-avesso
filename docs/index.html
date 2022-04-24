@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!--suppress ALL -->
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
@@ -32,6 +33,90 @@
 			.button-list > div {
 				margin: 0 1rem;
 			}
+			#help {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				color: #b4b4b4;
+				font-family: Consolas, monospace, sans-serif;
+				width: 100vw;
+				height: 100vh;
+			}
+			#help h3 {
+				font-size: 20px;
+			}
+			.description {
+				font-size: 18px;
+				margin: 4vh 5vw;
+			}
+			#dangerzone {
+				position: fixed;
+				top: 99vh;
+				height: 1vh;
+				background-color: red;
+				width: 100vw;
+				left: 0;
+				opacity: 0.8;
+				z-index: 999;
+			}
+			#gameoverscreen {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				position: fixed;
+				justify-content: center;
+				top: 0;
+				width: 100vw;
+				height: 100vh;
+				z-index: 999;
+				pointer-events: none;
+			}
+			#gameoverscreen > div {
+				background-color: #00000087;
+			}
+			.share-button {
+				position: fixed;
+				padding: 1rem 2rem;
+				font-size: 1.1rem;
+				border: none;
+				cursor: pointer;
+				background-color: #444;
+				z-index: 100;
+				bottom: 1rem;
+				right: 1rem;
+				transition: 0.5s opacity ease-in-out, 0.5s transform ease-out;
+				opacity: 0;
+				color: white;
+			}
+			.share-button:hover {
+				background-color: #333;
+			}
+			#modalwrapper {
+				position: fixed;
+				top: 0;
+				left: 0;
+				z-index: 1000;
+				width: 100vw;
+				height: 100vh;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				background-color: rgba(0, 0, 0, 0.3);
+				color: white;
+				font-family: Consolas, monospace, sans-serif;
+			}
+			#modalwrapper .modal {
+				width: 360px;
+				background-color: #555;
+				padding: 0.75rem 0.75rem;
+			}
+			#modalwrapper input {
+				font-size: 8px;
+				font-family: "Courier New";
+				width: 100%;
+				box-sizing: border-box;
+			}
 		</style>
 	</head>
 	<body style="background-color: #1e1e1e; margin: 0; padding: 0; overflow: hidden;">
@@ -48,14 +133,38 @@
 					<a href="#modo-sem-tempo" onclick="window.onModoSemTempoClick(event)">Modo livre</a>
 				</div>
 			</div>
-			<div id="ajudaWrapper" style="display: none; margin-top: 3rem">
-				<a href="#ajuda" onclick="window.onAjudaClick(event)">Ajuda</a>
+			<div id="ajudawrapper" style="opacity: 0; margin-top: 3rem">
+				<a href="#ajuda" style="pointerEvents: none;" onclick="window.onAjudaClick(event)">Ajuda</a>
 			</div>
 		</div>
 		<div id="root"></div>
+		<div id="help" style="display: none;">
+			<h1>Historia do Avesso</h1>
+			<h3>Desafie-se escrevendo uma história do fim até o inicio.</h3>
+			<div class="description">
+				<p>O objetivo é criar uma história começando pela ultima frase dele, pensando na história de trás para frente.</p>
+				<p>Sempre que pressionar enter, o texto de linha atual desce liberando mais espaço para você escrever o que ocorreu antes.</p>
+				<p>Você também pode pressionar Shift+Enter para mandar o texto atual duas linhas para baixo.</p>
+				<p>No modo desafio, você tem cerca de 10 segundos para escrever cada frase, se demorar demais ou mover a linha para a borda vermelha você perde sua história. Quando terminar, basta apertar no botão 'Terminei!' em baixo, a direita.</p>
+			</div>
+		</div>
+		<div id="dangerzone" style="display: none"></div>
+		<div id="gameoverscreen" style="display: none">
+			<h1 style="pointer-events: none; transition: 0.5s opacity ease-in-out, 0.5s transform ease-out; opacity: 0">Fim de Jogo!</h1>
+		</div>
+		<button style="display: none" class="share-button" onclick="window.onCompartilharClick(event)">Compartilhar</button>
+		<div id="modalwrapper" onmousedown="(event.target === window.modalwrapper) && (event.target.style.display = 'none')" style="display: none">
+			<div class="modal">
+				<div style="margin-bottom: 0.5rem">Link para compartilhar</div>
+				<input type="text" readonly />
+			</div>
+		</div>
 		<script>
 			// pros perdido
-			setTimeout(() => window['ajudaWrapper'].style.display = 'block', 15000);
+			setTimeout(() => {
+				window['ajudawrapper'].style.opacity = '1';
+				window['ajudawrapper'].children[0].style.pointerEvents = 'all';
+			}, 4000);
 		</script>
 		<script src="./main.bundle.js"></script>
 	</body>

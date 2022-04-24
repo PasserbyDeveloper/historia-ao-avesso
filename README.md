@@ -4,13 +4,6 @@ Web app para a criação de histórias de tráz para frente diretamente no brows
 
 Inclui modo desafio!
 
-# Todo para o dia final
-
-1. Criar o desafio
-2. Criar a pagina de ajuda
-3. Criar um botão 'Compartilhar'
-4. [Baixa prioridade] Resolver bug local em que npm run build usa ambiente de desenvolvimento.
-
 # Origem
 
 Este é um repositório do projeto da semana dev organizada pelo jp_amis em 17/04/2022, entretanto eu iniciei já na metade, com dois dias restantes para termina, e portanto meu escopo ficou pequeno e meu código caótico.
@@ -42,3 +35,5 @@ Obrigado a todos que apareceram nas lives de 2022-04-22 e 2022-04-23, os dias de
 - machiniiis
 - jp_amis (valeu pela raid!)
 - sergiocabral_com (valeu pela raid!)
+- Magistrado (valeu pela idéia de endgame do desafio e do sistema de compartilhar por link)
+- FioteBearDev (valeu pela raid!)
