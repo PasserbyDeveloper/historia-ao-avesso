@@ -4,6 +4,8 @@ Web app para a criação de histórias de tráz para frente diretamente no brows
 
 Inclui modo desafio!
 
+Acesso: https://passerbydeveloper.github.io/historia-ao-avesso/
+
 # Origem
 
 Este é um repositório do projeto da semana dev organizada pelo jp_amis em 17/04/2022, entretanto eu iniciei já na metade, com dois dias restantes para termina, e portanto meu escopo ficou pequeno e meu código caótico.
